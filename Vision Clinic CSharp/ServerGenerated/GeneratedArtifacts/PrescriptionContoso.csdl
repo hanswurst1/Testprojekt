@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="PrescriptionContoso" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <Association Name="FK_Product_ProductRebate">
+    <End Role="Product" Type="PrescriptionContoso.Product" Multiplicity="1" />
+    <End Role="ProductRebate" Type="PrescriptionContoso.ProductRebate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="ProductRebate">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" ConcurrencyMode="Fixed" />
+    <Property Name="MSRP" Type="Decimal" Nullable="false" Precision="19" Scale="4" ConcurrencyMode="Fixed" />
+    <Property Name="Description" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="ProductImage" Type="Binary" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Category" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="ProductRebates" Relationship="PrescriptionContoso.FK_Product_ProductRebate" ToRole="ProductRebate" FromRole="Product" />
+  </EntityType>
+  <EntityType Name="ProductRebate">
+    <Key>
+      <PropertyRef Name="ProductRebateID" />
+    </Key>
+    <Property Name="ProductRebateID" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="RebateStart" Type="DateTime" Precision="0" ConcurrencyMode="Fixed" />
+    <Property Name="RebateEnd" Type="DateTime" Precision="0" ConcurrencyMode="Fixed" />
+    <Property Name="Rebate" Type="Decimal" Precision="19" Scale="4" ConcurrencyMode="Fixed" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="Product" Relationship="PrescriptionContoso.FK_Product_ProductRebate" ToRole="Product" FromRole="ProductRebate" />
+  </EntityType>
+  <EntityContainer Name="PrescriptionContosoObjectContext">
+    <EntitySet Name="Products" EntityType="PrescriptionContoso.Product" />
+    <EntitySet Name="ProductRebates" EntityType="PrescriptionContoso.ProductRebate" />
+    <AssociationSet Name="FK_Product_ProductRebate" Association="PrescriptionContoso.FK_Product_ProductRebate">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="ProductRebate" EntitySet="ProductRebates" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
